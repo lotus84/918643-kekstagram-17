@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Elena Mikirtumova](https://up.htmlacademy.ru/javascript/17/user/918643).
-* Наставник: `Неизвестно`.
+* Наставник: [Владислав Балабанович] (https://htmlacademy.ru/profile/balabanovich).
 
 ---
 
