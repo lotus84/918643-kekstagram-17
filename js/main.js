@@ -15,8 +15,6 @@ var NUMBERS_PHOTO = [];
 
 getNumbers(1, 25, NUMBERS_PHOTO);
 
-console.log(NUMBERS_PHOTO);
-
 // Функция перемешивает переданный массив
 var shuffleNumbers = function (arr) {
   var j;
@@ -32,8 +30,6 @@ var shuffleNumbers = function (arr) {
 
 shuffleNumbers(NUMBERS_PHOTO);
 
-console.log(NUMBERS_PHOTO);
-
 // Функция формирует массив адресов картинок из переданного массива чисел
 var getUrls = function (arrNumbers, arrUrls, startLine, endLine) {
   for (var i = 0; i < arrNumbers.length; i++) {
@@ -47,14 +43,10 @@ var URLS = [];
 
 getUrls(NUMBERS_PHOTO, URLS, 'photos/', '.jpg');
 
-console.log(URLS);
-
 // Функция генерирует произвольное число из переданного диапазона чисел
 var getRandomInteger = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
-
-console.log(getRandomInteger(15, 200));
 
 var MESSAGES = ['Всё отлично!', 'В целом всё неплохо. Но не всё.', 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 
@@ -66,8 +58,6 @@ shuffleNumbers(NUMBERS_AVATAR);
 var AVATARS = [];
 
 getUrls(NUMBERS_AVATAR, AVATARS, 'img/avatar-', '.svg');
-
-console.log(AVATARS);
 
 var NAMES = ['Изольда', 'Марк', 'Луиза', 'Лев', 'Джана', 'Эрик'];
 
@@ -87,4 +77,18 @@ var getComment = function (arrAvatars, arrMessages, arrNames, arrUrls, arrCommen
 
 getComment(AVATARS, MESSAGES, NAMES, URLS, COMMENTS);
 
-console.log(COMMENTS);
+var PICTURES = [];
+
+// Функция генерирует массив из JS-объектов (описание фото)
+var getPictures = function (arrUrls, arrComments, arrPictures) {
+  for (var i = 0; i < arrUrls.length; i++) {
+    var picture = {};
+    picture.url = arrUrls[i];
+    picture.likes = getRandomInteger(15, 200);
+    picture.comments = arrComments[i];
+    arrPictures.push(picture);
+  }
+  return arrPictures;
+};
+
+getPictures(URLS, COMMENTS, PICTURES);
