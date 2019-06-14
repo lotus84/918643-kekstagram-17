@@ -61,11 +61,11 @@ getUrls(NUMBERS_AVATAR, AVATARS, 'img/avatar-', '.svg');
 
 var NAMES = ['Изольда', 'Марк', 'Луиза', 'Лев', 'Джана', 'Эрик'];
 
-var COMMENTS = [];
-
 // Функция создает массив объектов: список комментариев к фото
-var getComment = function (arrAvatars, arrMessages, arrNames, arrUrls, arrComments) {
-  for (var i = 0; i < arrUrls.length; i++) {
+var getComment = function (arrAvatars, arrMessages, arrNames, arrComments) {
+  var numbersComment = getRandomInteger(0, 4);
+  var stopPoint = numbersComment;
+  for (var i = 0; i <= stopPoint; i++) {
     var comment = {};
     comment.avatar = arrAvatars[getRandomInteger(0, arrAvatars.length - 1)];
     comment.message = arrMessages[getRandomInteger(0, arrAvatars.length - 1)];
@@ -75,20 +75,73 @@ var getComment = function (arrAvatars, arrMessages, arrNames, arrUrls, arrCommen
   return arrComments;
 };
 
-getComment(AVATARS, MESSAGES, NAMES, URLS, COMMENTS);
+// getComment(AVATARS, MESSAGES, NAMES, COMMENTS);
+
+// console.log(COMMENTS);
+
+var COMMENTS = [];
+var ALL_COMMENTS = [];
+
+// Функция создает массив, который состоит из массивов объектов-списков комментариев
+var getPoolComments = function (arrAvatars, arrMessages, arrNames, arrComments, arrUrls, arrAllComments) {
+  for (var i = 0; i < arrUrls.length; i++) {
+    arrAllComments.push(getComment(arrAvatars, arrMessages, arrNames, arrComments));
+  }
+
+  return arrAllComments;
+};
+
+getPoolComments(AVATARS, MESSAGES, NAMES, COMMENTS, URLS, ALL_COMMENTS);
+
+// console.log(ALL_COMMENTS);
 
 var PICTURES = [];
 
 // Функция генерирует массив из JS-объектов (описание фото)
-var getPictures = function (arrUrls, arrComments, arrPictures) {
+var getPictures = function (arrUrls, arrAllComments, arrPictures) {
   for (var i = 0; i < arrUrls.length; i++) {
     var picture = {};
     picture.url = arrUrls[i];
     picture.likes = getRandomInteger(15, 200);
-    picture.comments = arrComments[i];
+    picture.comments = arrAllComments[i];
     arrPictures.push(picture);
   }
   return arrPictures;
 };
 
-getPictures(URLS, COMMENTS, PICTURES);
+getPictures(URLS, ALL_COMMENTS, PICTURES);
+
+// console.log(PICTURES);
+
+var similarListElement = document.querySelector('.pictures');
+var similarPictureTemplate = document.querySelector('#picture')
+.content
+.querySelector('.picture');
+
+// console.log(similarListElement);
+// console.log(similarPictureTemplate);
+
+// Функция создает DOM-элемент на основе JS-объекта
+var renderPicture = function (picture) {
+  var pictureElement = similarPictureTemplate.cloneNode(true);
+  pictureElement.querySelector('.picture__img').src = picture.url;
+  pictureElement.querySelector('.picture__likes').textContent = picture.likes;
+  pictureElement.querySelector('.picture__comments').textContent = picture.comments.length;
+
+  return pictureElement;
+};
+
+// console.log(renderPicture(PICTURES[0]));
+
+// Функция заполняет блок DOM-элементами из массива
+var createFragment = function (pictures) {
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < pictures.length; i++) {
+    fragment.appendChild(renderPicture(pictures[i]));
+  }
+
+  return similarListElement.appendChild(fragment);
+};
+
+createFragment(PICTURES);
