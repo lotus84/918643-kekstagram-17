@@ -18,12 +18,16 @@ var COMMENTS_MESSAGE = [
 ];
 var COMMENTS_NAME = ['Изольда', 'Марк', 'Луиза', 'Лев', 'Джана', 'Эрик'];
 var PHOTO_COUNT = 25;
+var MIN_LIKES = 15;
+var MAX_LIKES = 200;
+var MIN_COMMENTS = 1;
+var MAX_COMMENTS = 10;
 
 
 var generatePhotoObject = function (index) {
   return {
     url: 'photos/' + index + '.jpg',
-    likes: getRandomNumber(15, 200),
+    likes: getRandomNumber(MIN_LIKES, MAX_LIKES),
     comments: getCommentsArray()
   };
 };
@@ -33,7 +37,7 @@ var getRandomNumber = function (min, max) {
 };
 
 var getCommentsArray = function () {
-  var commentsCount = getRandomNumber(1, 10);
+  var commentsCount = getRandomNumber(MIN_COMMENTS, MAX_COMMENTS);
   var commentsArray = [];
   for (var i = 0; i < commentsCount; i++) {
     commentsArray.push(generateCommentObject());
