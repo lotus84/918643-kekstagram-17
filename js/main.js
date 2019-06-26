@@ -22,6 +22,7 @@ var MIN_LIKES = 15;
 var MAX_LIKES = 200;
 var MIN_COMMENTS = 1;
 var MAX_COMMENTS = 10;
+var ESC_KEYCODE = 27;
 
 
 var generatePhotoObject = function (index) {
@@ -89,3 +90,32 @@ var fillBlockWithPictures = function (pictures) {
 };
 
 fillBlockWithPictures(photosArray);
+
+var formPopupOpen = similarListElement.querySelector('#upload-file');
+var formPopup = similarListElement.querySelector('.img-upload__overlay');
+var formPopupClose = similarListElement.querySelector('#upload-cancel');
+var onFormPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeFormPopup();
+  }
+};
+var openFormPopup = function () {
+  formPopup.classList.remove('hidden');
+  document.addEventListener('keydown', onFormPopupEscPress);
+};
+var closeFormPopup = function () {
+  formPopup.classList.add('hidden');
+  document.removeEventListener('keydown', onFormPopupEscPress);
+  clearFileInputField();
+};
+var clearFileInputField = function () {
+  formPopupOpen.value = '';
+};
+
+formPopupOpen.addEventListener('change', function () {
+  openFormPopup();
+});
+
+formPopupClose.addEventListener('click', function () {
+  closeFormPopup();
+});
