@@ -91,6 +91,7 @@ var fillBlockWithPictures = function (pictures) {
 
 fillBlockWithPictures(photosArray);
 
+// Открытие и закрытие формы загрузки и редактирования изображения
 var formPopupOpen = similarListElement.querySelector('#upload-file');
 var formPopup = similarListElement.querySelector('.img-upload__overlay');
 var formPopupClose = similarListElement.querySelector('#upload-cancel');
@@ -118,4 +119,55 @@ formPopupOpen.addEventListener('change', function () {
 
 formPopupClose.addEventListener('click', function () {
   closeFormPopup();
+});
+
+// Наложение эффекта на изображение
+var effectsList = document.querySelector('.effects__list');
+var effects = effectsList.querySelectorAll('.effects__radio');
+var imagePreview = document.querySelector('.img-upload__preview img');
+var effectLevel = document.querySelector('.img-upload__effect-level');
+var addOnEffectClick = function (effect) {
+  effect.addEventListener('click', function () {
+    clearEffects();
+    addEffect(effect);
+    toggleEffectLevel(effect);
+  });
+};
+var clearEffects = function () {
+  imagePreview.classList.remove('effects__preview--none', 'effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat');
+};
+var addEffect = function (effect) {
+  imagePreview.classList.add('effects__preview--' + effect.value);
+};
+var toggleEffectLevel = function (effect) {
+  if (effect.value === 'none') {
+    effectLevel.classList.add('hidden');
+  } else {
+    effectLevel.classList.remove('hidden');
+  }
+};
+
+for (var l = 0; l < effects.length; l++) {
+  addOnEffectClick(effects[l]);
+}
+
+// Регулирование интенсивности эффекта
+var effectLevelFieldset = document.querySelector('.effect-level');
+var effectLevelPin = effectLevelFieldset.querySelector('.effect-level__pin');
+var effectLevelDepth = effectLevelFieldset.querySelector('.effect-level__depth');
+var effectLevelLine = effectLevelFieldset.querySelector('.effect-level__line');
+var effectLevelValue = effectLevelFieldset.querySelector('.effect-level__value');
+var getPinValue = function () {
+  var depthWidth = effectLevelDepth.getBoundingClientRect().right - effectLevelDepth.getBoundingClientRect().left;
+  var lineWidth = effectLevelLine.getBoundingClientRect().right - effectLevelLine.getBoundingClientRect().left;
+  var pinValue = Math.round((depthWidth / lineWidth) * 100);
+  effectLevelValue.setAttribute('value', pinValue);
+};
+/* var setFilterValue = function () {
+  var filter = window.getComputedStyle(imagePreview).filter;
+  filter = 'grayscale(' + (pinValue / 100) + ')';
+};*/
+
+effectLevelPin.addEventListener('mouseup', function () {
+  getPinValue();
 });
