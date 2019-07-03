@@ -95,9 +95,13 @@ fillBlockWithPictures(photosArray);
 var formPopupOpen = similarListElement.querySelector('#upload-file');
 var formPopup = similarListElement.querySelector('.img-upload__overlay');
 var formPopupClose = similarListElement.querySelector('#upload-cancel');
+var commentTextarea = formPopup.querySelector('.text__description');
+var hashtagInput = formPopup.querySelector('.text__hashtags');
 var onFormPopupEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
-    closeFormPopup();
+    if (commentTextarea !== document.activeElement && hashtagInput !== document.activeElement) {
+      closeFormPopup();
+    }
   }
 };
 var openFormPopup = function () {
