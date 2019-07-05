@@ -23,6 +23,7 @@ var MAX_LIKES = 200;
 var MIN_COMMENTS = 1;
 var MAX_COMMENTS = 10;
 var ESC_KEYCODE = 27;
+var PIN_VALUE_INITIAL = 100;
 
 
 var generatePhotoObject = function (index) {
@@ -106,6 +107,7 @@ var onFormPopupEscPress = function (evt) {
 };
 var openFormPopup = function () {
   formPopup.classList.remove('hidden');
+  effectLevel.classList.add('hidden');
   document.addEventListener('keydown', onFormPopupEscPress);
 };
 var closeFormPopup = function () {
@@ -142,10 +144,23 @@ var clearEffects = function () {
     imagePreview.classList.remove('effects__preview--' + currentEffect);
   }
 };
+var setInitialState = function () {
+  if (currentEffect === 'none') {
+    imagePreview.setAttribute('style', 'filter: initial');
+  } else {
+    pinValue = PIN_VALUE_INITIAL;
+    valueInput.setAttribute('value', pinValue);
+    imagePreview.setAttribute('style', effectFilters[currentEffect]());
+    var initialX = getCoords(sliderElem).width;
+    pinElem.style.left = initialX + 'px';
+    fillSliderElem.style.width = initialX + 'px';
+  }
+};
 var addEffect = function (effect) {
   clearEffects();
   currentEffect = effect.value;
   imagePreview.classList.add('effects__preview--' + currentEffect);
+  setInitialState();
 };
 var toggleEffectLevel = function (effect) {
   if (effect.value === 'none') {
@@ -183,23 +198,63 @@ var effectFilters = {
   }
 };
 var effectLevelFieldset = document.querySelector('.effect-level');
-var effectLevelPin = effectLevelFieldset.querySelector('.effect-level__pin');
-var effectLevelDepth = effectLevelFieldset.querySelector('.effect-level__depth');
-var effectLevelLine = effectLevelFieldset.querySelector('.effect-level__line');
-var effectLevelValue = effectLevelFieldset.querySelector('.effect-level__value');
+var pinElem = effectLevelFieldset.querySelector('.effect-level__pin');
+var fillSliderElem = effectLevelFieldset.querySelector('.effect-level__depth');
+var sliderElem = effectLevelFieldset.querySelector('.effect-level__line');
+var valueInput = effectLevelFieldset.querySelector('.effect-level__value');
+var getCoords = function (elem) {
+  var elemPosition = elem.getBoundingClientRect();
+  return {
+    left: elemPosition.left,
+    right: elemPosition.right,
+    width: elemPosition.right - elemPosition.left
+  };
+};
 var getPinValue = function () {
-  var depthPosition = effectLevelDepth.getBoundingClientRect();
-  var linePosition = effectLevelLine.getBoundingClientRect();
-  var depthWidth = depthPosition.right - depthPosition.left;
-  var lineWidth = linePosition.right - linePosition.left;
-  pinValue = Math.round((depthWidth / lineWidth) * 100);
-  effectLevelValue.setAttribute('value', pinValue);
+  pinValue = Math.round((getCoords(fillSliderElem).width / getCoords(sliderElem).width) * 100);
+  valueInput.setAttribute('value', pinValue);
 };
 var setFilterValue = function () {
   imagePreview.setAttribute('style', effectFilters[currentEffect]());
 };
 
-effectLevelPin.addEventListener('mouseup', function () {
-  getPinValue();
-  setFilterValue();
+pinElem.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+  var startCoordX = evt.clientX;
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var newCoordX = moveEvt.clientX;
+
+    if (newCoordX < getCoords(sliderElem).left) {
+      newCoordX = getCoords(sliderElem).left;
+    }
+
+    if (newCoordX > getCoords(sliderElem).right) {
+      newCoordX = getCoords(sliderElem).right;
+    }
+
+    var shiftX = startCoordX - newCoordX;
+
+    startCoordX = newCoordX;
+
+    pinElem.style.left = (pinElem.offsetLeft - shiftX) + 'px';
+    var depthWidth = Math.round(getCoords(pinElem).left + getCoords(pinElem).width / 2 - getCoords(sliderElem).left);
+    fillSliderElem.style.width = depthWidth + 'px';
+
+    getPinValue();
+    setFilterValue();
+  };
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    getPinValue();
+    setFilterValue();
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
 });
