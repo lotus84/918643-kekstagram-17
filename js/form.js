@@ -26,6 +26,7 @@
   };
   var closeFormPopup = function () {
     formPopup.classList.add('hidden');
+    imagePreview.setAttribute('style', 'filter: initial');
     document.removeEventListener('keydown', onFormPopupEscPress);
     clearFileInputField();
   };
