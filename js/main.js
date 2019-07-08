@@ -129,6 +129,7 @@ formPopupClose.addEventListener('click', function () {
 
 // Наложение эффекта на изображение
 var currentEffect;
+var PIN_INITIAL_X = '453px';
 var effectsList = document.querySelector('.effects__list');
 var effects = effectsList.querySelectorAll('.effects__radio');
 var imagePreview = document.querySelector('.img-upload__preview img');
@@ -151,9 +152,8 @@ var setInitialState = function () {
     pinValue = PIN_VALUE_INITIAL;
     valueInput.setAttribute('value', pinValue);
     imagePreview.setAttribute('style', effectFilters[currentEffect]());
-    var initialX = getCoords(sliderElem).width;
-    pinElem.style.left = initialX + 'px';
-    fillSliderElem.style.width = initialX + 'px';
+    pinElem.style.left = PIN_INITIAL_X;
+    fillSliderElem.style.width = PIN_INITIAL_X;
   }
 };
 var addEffect = function (effect) {
