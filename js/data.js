@@ -27,17 +27,13 @@
   var generatePhotoObject = function (index) {
     return {
       url: 'photos/' + index + '.jpg',
-      likes: getRandomNumber(MIN_LIKES, MAX_LIKES),
+      likes: window.utils.getRandomNumber(MIN_LIKES, MAX_LIKES),
       comments: getCommentsArray()
     };
   };
 
-  var getRandomNumber = function (min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
   var getCommentsArray = function () {
-    var commentsCount = getRandomNumber(MIN_COMMENTS, MAX_COMMENTS);
+    var commentsCount = window.utils.getRandomNumber(MIN_COMMENTS, MAX_COMMENTS);
     var commentsArray = [];
     for (var i = 0; i < commentsCount; i++) {
       commentsArray.push(generateCommentObject());
@@ -47,14 +43,10 @@
 
   var generateCommentObject = function () {
     return {
-      avatar: getRandomItemFromArray(COMMENTS_AVATAR),
-      message: getRandomItemFromArray(COMMENTS_MESSAGE) + ' ' + getRandomItemFromArray(COMMENTS_MESSAGE),
-      name: getRandomItemFromArray(COMMENTS_NAME)
+      avatar: window.utils.getRandomItemFromArray(COMMENTS_AVATAR),
+      message: window.utils.getRandomItemFromArray(COMMENTS_MESSAGE) + ' ' + window.utils.getRandomItemFromArray(COMMENTS_MESSAGE),
+      name: window.utils.getRandomItemFromArray(COMMENTS_NAME)
     };
-  };
-
-  var getRandomItemFromArray = function (arr) {
-    return arr[getRandomNumber(0, arr.length - 1)];
   };
 
   var photosArray = [];
@@ -62,31 +54,7 @@
     photosArray.push(generatePhotoObject(k + 1));
   }
 
-  var similarListElement = document.querySelector('.pictures');
-  var similarPictureTemplate = document.querySelector('#picture')
-  .content
-  .querySelector('.picture');
-
-  // Функция создает DOM-элемент на основе JS-объекта
-  var renderPicture = function (picture) {
-    var pictureElement = similarPictureTemplate.cloneNode(true);
-    pictureElement.querySelector('.picture__img').src = picture.url;
-    pictureElement.querySelector('.picture__likes').textContent = picture.likes;
-    pictureElement.querySelector('.picture__comments').textContent = picture.comments.length;
-
-    return pictureElement;
+  window.data = {
+    photosArray: photosArray
   };
-
-  // Функция заполняет блок DOM-элементами из массива
-  var fillBlockWithPictures = function (pictures) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < pictures.length; i++) {
-      fragment.appendChild(renderPicture(pictures[i]));
-    }
-
-    similarListElement.appendChild(fragment);
-  };
-
-  fillBlockWithPictures(photosArray);
 })();
