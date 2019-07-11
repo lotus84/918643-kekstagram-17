@@ -27,5 +27,18 @@
     similarListElement.appendChild(fragment);
   };
 
-  fillBlockWithPictures(window.data.photosArray);
+  // Функция выводит сообщение об ошибке при загрузке данных с сервера
+  var onErrorLoad = function (errorMessage) {
+    var div = document.createElement('div');
+    div.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    div.style.position = 'absolute';
+    div.style.left = 0;
+    div.style.right = 0;
+    div.style.fontSize = '30px';
+    div.textContent = errorMessage;
+
+    document.body.insertAdjacentElement('afterbegin', div);
+  };
+
+  window.load(fillBlockWithPictures, onErrorLoad);
 })();
