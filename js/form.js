@@ -42,6 +42,76 @@
     closeFormPopup();
   });
 
+  // Отправка данных формы на сервер
+  form.addEventListener('submit', function (evt) {
+    window.backend.upload(new FormData(form), onSuccessMessage, onErrorMessage);
+    closeFormPopup();
+    evt.preventDefault();
+  });
+
+  // Создание сообщения об успешной/неуспешной загрузке изображения
+  var createMessage = function (name) {
+    var similarMessageTemplate = document.querySelector('#' + name)
+    .content
+    .querySelector('.' + name);
+    var message = similarMessageTemplate.cloneNode(true);
+    var button = message.querySelector('.' + name + '__button');
+
+    return {
+      message: message,
+      button: button
+    };
+  };
+
+  var renderMessage = function (element) {
+    var mainElement = document.querySelector('main');
+    mainElement.appendChild(element);
+  };
+
+  var onSuccessMessage = function () {
+    var successMessage = createMessage('success').message;
+    renderMessage(successMessage);
+    var successButton = createMessage('success').button;
+
+    var onSuccessButtonClick = function () {
+      successMessage.parentNode.removeChild(successMessage);
+      successButton.removeEventListener('click', onSuccessButtonClick);
+      document.removeEventListener('keydown', onSuccessMessageEscPress);
+      document.removeEventListener('click', onSuccessButtonClick);
+    };
+    var onSuccessMessageEscPress = function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        onSuccessButtonClick();
+      }
+    };
+
+    successButton.addEventListener('click', onSuccessButtonClick);
+    document.addEventListener('keydown', onSuccessMessageEscPress);
+    document.addEventListener('click', onSuccessButtonClick);
+  };
+
+  var onErrorMessage = function () {
+    var errorMessage = createMessage('error').message;
+    renderMessage(errorMessage);
+    var errorButton = createMessage('error').button;
+
+    var onErrorButtonClick = function () {
+      errorMessage.parentNode.removeChild(errorMessage);
+      errorButton.removeEventListener('click', onErrorButtonClick);
+      document.removeEventListener('keydown', onErrorMessageEscPress);
+      document.removeEventListener('click', onErrorButtonClick);
+    };
+    var onErrorMessageEscPress = function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        onErrorButtonClick();
+      }
+    };
+
+    errorButton.addEventListener('click', onErrorButtonClick);
+    document.addEventListener('keydown', onErrorMessageEscPress);
+    document.addEventListener('click', onErrorButtonClick);
+  };
+
   // Наложение эффекта на изображение
   var currentEffect;
   var effectsList = document.querySelector('.effects__list');
