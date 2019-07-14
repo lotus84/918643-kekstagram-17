@@ -40,5 +40,5 @@
     document.body.insertAdjacentElement('afterbegin', div);
   };
 
-  window.load(fillBlockWithPictures, onErrorLoad);
+  window.backend.load(fillBlockWithPictures, onErrorLoad);
 })();
