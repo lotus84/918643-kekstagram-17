@@ -28,13 +28,14 @@
     formPopup.classList.add('hidden');
     imagePreview.setAttribute('style', 'filter: initial');
     document.removeEventListener('keydown', onFormPopupEscPress);
-    clearFormFields();
+    form.reset();
+    // clearFormFields();
   };
-  var clearFormFields = function () {
+  /* var clearFormFields = function () {
     formPopupOpen.value = '';
     commentTextarea.value = '';
     hashtagInput.value = '';
-  };
+  };*/
 
   formPopupOpen.addEventListener('change', function () {
     openFormPopup();
