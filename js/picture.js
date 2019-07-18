@@ -1,30 +1,82 @@
 'use strict';
 
 (function () {
-  var similarListElement = document.querySelector('.pictures');
-  var similarPictureTemplate = document.querySelector('#picture')
-  .content
-  .querySelector('.picture');
+  var FIRST_INDEX = 0;
+  var MIDDLE_INDEX = 14;
+  var POPULAR_PHOTO_COUNT = 10;
+  var firstRandomIndex = window.utils.getRandomNumber(FIRST_INDEX, MIDDLE_INDEX);
+  var endRandomIndex = firstRandomIndex + POPULAR_PHOTO_COUNT;
+  var imgFiltersBlock = document.querySelector('.img-filters');
+  var imgFiltersForm = imgFiltersBlock.querySelector('.img-filters__form');
+  var popularFilterButton = imgFiltersBlock.querySelector('#filter-popular');
+  var newFilterButton = imgFiltersBlock.querySelector('#filter-new');
+  var discussedFilterButton = imgFiltersBlock.querySelector('#filter-discussed');
 
-  // Функция создает DOM-элемент на основе JS-объекта
-  var renderPicture = function (picture) {
-    var pictureElement = similarPictureTemplate.cloneNode(true);
-    pictureElement.querySelector('.picture__img').src = picture.url;
-    pictureElement.querySelector('.picture__likes').textContent = picture.likes;
-    pictureElement.querySelector('.picture__comments').textContent = picture.comments.length;
-
-    return pictureElement;
+  var urlsComparator = function (left, right) {
+    if (left > right) {
+      return 1;
+    } else if (left < right) {
+      return -1;
+    } else {
+      return 0;
+    }
   };
 
-  // Функция заполняет блок DOM-элементами из массива
-  var fillBlockWithPictures = function (pictures) {
-    var fragment = document.createDocumentFragment();
+  var updatePictures = function (begin, end) {
+    window.render(pictures
+      .slice(begin, end)
+      .sort(function (left, right) {
+        var commentsDiff = right.comments.length - left.comments.length;
+        if (commentsDiff === 0) {
+          commentsDiff = urlsComparator(left.url, right.url);
+        }
+        return commentsDiff;
+      }));
+  };
 
-    for (var i = 0; i < pictures.length; i++) {
-      fragment.appendChild(renderPicture(pictures[i]));
+  popularFilterButton.addEventListener('click', function () {
+    changeButtonClass(popularFilterButton);
+    clearOldPictures();
+    window.render(pictures);
+  });
+
+  newFilterButton.addEventListener('click', function () {
+    changeButtonClass(newFilterButton);
+    clearOldPictures();
+    updatePictures(firstRandomIndex, endRandomIndex);
+  });
+
+  discussedFilterButton.addEventListener('click', function () {
+    changeButtonClass(discussedFilterButton);
+    clearOldPictures();
+    updatePictures(FIRST_INDEX);
+  });
+
+  var clearOldPictures = function () {
+    var similarListElement = document.querySelector('.pictures');
+    var usersPictures = Array.from(similarListElement.querySelectorAll('a'));
+
+    for (var i = 0; i < usersPictures.length; i++) {
+      similarListElement.removeChild(usersPictures[i]);
+    }
+  };
+
+  var changeButtonClass = function (activeButton) {
+    var buttons = Array.from(imgFiltersForm.querySelectorAll('.img-filters__button'));
+
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].classList.remove('img-filters__button--active');
     }
 
-    similarListElement.appendChild(fragment);
+    activeButton.classList.add('img-filters__button--active');
+  };
+
+  var pictures = [];
+
+  // Функция отрисовывает данные, полученные с сервера
+  var onSuccessLoad = function (data) {
+    pictures = data;
+    window.render(pictures);
   };
 
   // Функция выводит сообщение об ошибке при загрузке данных с сервера
@@ -40,5 +92,7 @@
     document.body.insertAdjacentElement('afterbegin', div);
   };
 
-  window.backend.load(fillBlockWithPictures, onErrorLoad);
+  window.backend.load(onSuccessLoad, onErrorLoad);
+
+  window.picture = imgFiltersBlock;
 })();
