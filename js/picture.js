@@ -37,19 +37,19 @@
   popularFilterButton.addEventListener('click', function () {
     changeButtonClass(popularFilterButton);
     clearOldPictures();
-    window.render(pictures);
+    window.debounce(window.render(pictures));
   });
 
   newFilterButton.addEventListener('click', function () {
     changeButtonClass(newFilterButton);
     clearOldPictures();
-    updatePictures(firstRandomIndex, endRandomIndex);
+    window.debounce(updatePictures(firstRandomIndex, endRandomIndex));
   });
 
   discussedFilterButton.addEventListener('click', function () {
     changeButtonClass(discussedFilterButton);
     clearOldPictures();
-    updatePictures(FIRST_INDEX);
+    window.debounce(updatePictures(FIRST_INDEX));
   });
 
   var clearOldPictures = function () {
