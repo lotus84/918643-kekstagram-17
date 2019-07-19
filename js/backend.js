@@ -14,6 +14,7 @@
       xhr.addEventListener('load', function () {
         if (xhr.status === 200) {
           onSuccess(xhr.response);
+          window.picture.classList.remove('img-filters--inactive');
         } else {
           onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
         }

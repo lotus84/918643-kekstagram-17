@@ -28,11 +28,14 @@
     formPopup.classList.add('hidden');
     imagePreview.setAttribute('style', 'filter: initial');
     document.removeEventListener('keydown', onFormPopupEscPress);
-    clearFileInputField();
+    form.reset();
+    // clearFormFields();
   };
-  var clearFileInputField = function () {
+  /* var clearFormFields = function () {
     formPopupOpen.value = '';
-  };
+    commentTextarea.value = '';
+    hashtagInput.value = '';
+  };*/
 
   formPopupOpen.addEventListener('change', function () {
     openFormPopup();
@@ -44,9 +47,9 @@
 
   // Отправка данных формы на сервер
   form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
     window.backend.upload(new FormData(form), onSuccessMessage, onErrorMessage);
     closeFormPopup();
-    evt.preventDefault();
   });
 
   // Создание сообщения об успешной/неуспешной загрузке изображения
