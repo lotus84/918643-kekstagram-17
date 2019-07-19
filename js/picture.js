@@ -1,5 +1,6 @@
 'use strict';
 
+// Модуль для отрисовки миниатюры
 (function () {
   var FIRST_INDEX = 0;
   var MIDDLE_INDEX = 14;

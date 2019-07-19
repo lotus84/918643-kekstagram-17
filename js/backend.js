@@ -1,5 +1,6 @@
 'use strict';
 
+// Модуль, который работает с сервером
 (function () {
   var URL_DATA = 'https://js.dump.academy/kekstagram/data';
   var URL_FORM = 'https://js.dump.academy/kekstagram';
