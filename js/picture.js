@@ -26,10 +26,8 @@
     window.render(pictures
       .slice(begin, end)
       .sort(function (left, right) {
-        var commentsDiff = right.comments.length - left.comments.length;
-        if (commentsDiff === 0) {
-          commentsDiff = urlsComparator(left.url, right.url);
-        }
+        var commentsDiff = commentsDiff === 0 ? urlsComparator(left.url, right.url) : right.comments.length - left.comments.length;
+
         return commentsDiff;
       }));
   };
