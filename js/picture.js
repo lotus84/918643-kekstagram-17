@@ -12,6 +12,33 @@
   var newFilterButton = imgFiltersBlock.querySelector('#filter-new');
   var discussedFilterButton = imgFiltersBlock.querySelector('#filter-discussed');
 
+  // При завершении загрузки изображений с сервера показываем блок с кнопками-фильтрами
+  var showFiltersBlock = function () {
+    imgFiltersBlock.classList.remove('img-filters--inactive');
+  };
+
+  // Функция меняет класс active у нажатой кнопки
+  var changeButtonClass = function (activeButton) {
+    var buttons = Array.from(imgFiltersForm.querySelectorAll('.img-filters__button'));
+
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].classList.remove('img-filters__button--active');
+    }
+
+    activeButton.classList.add('img-filters__button--active');
+  };
+
+  // Функция очищает контейнер с загруженными фотографиями перед сортировкой
+  var clearOldPictures = function () {
+    var similarListElement = document.querySelector('.pictures');
+    var usersPictures = Array.from(similarListElement.querySelectorAll('a'));
+
+    for (var i = 0; i < usersPictures.length; i++) {
+      similarListElement.removeChild(usersPictures[i]);
+    }
+  };
+
+  // Функция сравнивает urls загруженных фотографий
   var urlsComparator = function (left, right) {
     if (left > right) {
       return 1;
@@ -22,6 +49,7 @@
     }
   };
 
+  // Функция сортирует и отрисовывает фотографии в соответствии с заданным критерием
   var updatePictures = function (begin, end) {
     window.render(pictures
       .slice(begin, end)
@@ -50,31 +78,14 @@
     window.debounce(updatePictures(FIRST_INDEX));
   });
 
-  var clearOldPictures = function () {
-    var similarListElement = document.querySelector('.pictures');
-    var usersPictures = Array.from(similarListElement.querySelectorAll('a'));
-
-    for (var i = 0; i < usersPictures.length; i++) {
-      similarListElement.removeChild(usersPictures[i]);
-    }
-  };
-
-  var changeButtonClass = function (activeButton) {
-    var buttons = Array.from(imgFiltersForm.querySelectorAll('.img-filters__button'));
-
-    for (var i = 0; i < buttons.length; i++) {
-      buttons[i].classList.remove('img-filters__button--active');
-    }
-
-    activeButton.classList.add('img-filters__button--active');
-  };
-
+  // Массив будет заполняться загруженными данными (фотографиями) с сервера
   var pictures = [];
 
-  // Функция отрисовывает данные, полученные с сервера
+  // Функция отрисовывает данные (фотографии), полученные с сервера
   var onSuccessLoad = function (data) {
     pictures = data;
     window.render(pictures);
+    showFiltersBlock();
   };
 
   // Функция выводит сообщение об ошибке при загрузке данных с сервера
@@ -90,7 +101,6 @@
     document.body.insertAdjacentElement('afterbegin', div);
   };
 
+  // Вызываем функцию загрузки данных с сервера
   window.backend.load(onSuccessLoad, onErrorLoad);
-
-  window.picture = imgFiltersBlock;
 })();
