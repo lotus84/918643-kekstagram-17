@@ -29,13 +29,7 @@
     imagePreview.setAttribute('style', 'filter: initial');
     document.removeEventListener('keydown', onFormPopupEscPress);
     form.reset();
-    // clearFormFields();
   };
-  /* var clearFormFields = function () {
-    formPopupOpen.value = '';
-    commentTextarea.value = '';
-    hashtagInput.value = '';
-  };*/
 
   formPopupOpen.addEventListener('change', function () {
     openFormPopup();
