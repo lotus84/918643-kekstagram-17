@@ -12,6 +12,8 @@
   var formPopupClose = form.querySelector('#upload-cancel');
   var commentTextarea = formPopup.querySelector('.text__description');
   var hashtagInput = formPopup.querySelector('.text__hashtags');
+
+  // Функция закрывает форму при нажатии на Esc
   var onFormPopupEscPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       if (commentTextarea !== document.activeElement && hashtagInput !== document.activeElement) {
@@ -19,11 +21,15 @@
       }
     }
   };
+
+  // Функция открывает форму загрузки и редактирования изображения
   var openFormPopup = function () {
     formPopup.classList.remove('hidden');
     effectLevel.classList.add('hidden');
     document.addEventListener('keydown', onFormPopupEscPress);
   };
+
+  // Функция закрывает форму загрузки и редактирования изображения
   var closeFormPopup = function () {
     formPopup.classList.add('hidden');
     imagePreview.setAttribute('style', 'filter: initial');
@@ -65,6 +71,7 @@
     mainElement.appendChild(element);
   };
 
+  // Функция callback показывает сообщение об успешной отправке данных формы на сервер
   var onSuccessMessage = function () {
     var successMessage = createMessage('success').message;
     renderMessage(successMessage);
@@ -87,6 +94,7 @@
     document.addEventListener('click', onSuccessButtonClick);
   };
 
+  // Функция callback показывает сообщение о неуспешной отправке данных формы на сервер
   var onErrorMessage = function () {
     var errorMessage = createMessage('error').message;
     renderMessage(errorMessage);
