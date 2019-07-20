@@ -1,11 +1,13 @@
 'use strict';
 
+// Модуль, который работает с сервером
 (function () {
   var URL_DATA = 'https://js.dump.academy/kekstagram/data';
   var URL_FORM = 'https://js.dump.academy/kekstagram';
   var TIMEOUT_VALUE = 10000;
 
   window.backend = {
+    // Функция отправляет запрос на сервер для загрузки данных
     load: function (onSuccess, onError) {
       var xhr = new XMLHttpRequest();
 
@@ -14,7 +16,6 @@
       xhr.addEventListener('load', function () {
         if (xhr.status === 200) {
           onSuccess(xhr.response);
-          window.picture.classList.remove('img-filters--inactive');
         } else {
           onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
         }
@@ -33,6 +34,8 @@
       xhr.open('GET', URL_DATA);
       xhr.send();
     },
+
+    // Функция отправляет данные формы на сервер
     upload: function (data, onSuccess, onError) {
       var xhr = new XMLHttpRequest();
 
