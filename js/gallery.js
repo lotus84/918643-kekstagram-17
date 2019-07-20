@@ -87,6 +87,7 @@
     pictures = data;
     window.picture(pictures);
     showFiltersBlock();
+    window.preview(pictures[0]);
   };
 
   // Функция выводит сообщение об ошибке при загрузке данных с сервера
