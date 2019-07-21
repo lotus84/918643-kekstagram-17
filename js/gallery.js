@@ -87,7 +87,7 @@
     pictures = data;
     window.picture(pictures);
     showFiltersBlock();
-    window.preview(pictures[0]);
+    window.gallery();
   };
 
   // Функция выводит сообщение об ошибке при загрузке данных с сервера
@@ -105,4 +105,38 @@
 
   // Вызываем функцию загрузки данных с сервера
   window.backend.load(onSuccessLoad, onErrorLoad);
+
+  // Функция заполняет массив фотографиями пользователей
+  var addUsersPicture = function () {
+    var usersPictures = Array.from(document.querySelectorAll('.picture__img'));
+
+    return usersPictures;
+  };
+
+  // Обработчик события клика по изображению для показа изображения в полноэкранном режиме
+  var onUsersPictureClick = function (index, array) {
+    var closeButton = document.querySelector('.big-picture__cancel');
+    array[index].addEventListener('click', function () {
+      window.preview(pictures[index]);
+    });
+
+    var onCloseButtonClick = function () {
+      var imageBig = document.querySelector('.big-picture');
+      imageBig.classList.add('hidden');
+    };
+
+    var onImageEscPress = function (evt) {
+      window.utils.isEscEvent(evt, onCloseButtonClick);
+    };
+
+    closeButton.addEventListener('click', onCloseButtonClick);
+    document.addEventListener('keydown', onImageEscPress);
+  };
+
+  window.gallery = function () {
+    var images = addUsersPicture();
+    for (var i = 0; i < images.length; i++) {
+      onUsersPictureClick(i, images);
+    }
+  };
 })();
