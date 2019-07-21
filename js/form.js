@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var ESC_KEYCODE = 27;
-
   // Открытие и закрытие формы загрузки и редактирования изображения
   var form = document.querySelector('.img-upload__form');
   var formPopupOpen = form.querySelector('#upload-file');
@@ -15,10 +13,8 @@
 
   // Функция закрывает форму при нажатии на Esc
   var onFormPopupEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      if (commentTextarea !== document.activeElement && hashtagInput !== document.activeElement) {
-        closeFormPopup();
-      }
+    if (commentTextarea !== document.activeElement && hashtagInput !== document.activeElement) {
+      window.utils.isEscEvent(evt, closeFormPopup);
     }
   };
 
@@ -77,21 +73,20 @@
     renderMessage(successMessage);
     var successButton = createMessage('success').button;
 
-    var onSuccessButtonClick = function () {
+    var onCloseButtonClick = function () {
       successMessage.parentNode.removeChild(successMessage);
-      successButton.removeEventListener('click', onSuccessButtonClick);
+      successButton.removeEventListener('click', onCloseButtonClick);
       document.removeEventListener('keydown', onSuccessMessageEscPress);
-      document.removeEventListener('click', onSuccessButtonClick);
-    };
-    var onSuccessMessageEscPress = function (evt) {
-      if (evt.keyCode === ESC_KEYCODE) {
-        onSuccessButtonClick();
-      }
+      document.removeEventListener('click', onCloseButtonClick);
     };
 
-    successButton.addEventListener('click', onSuccessButtonClick);
+    var onSuccessMessageEscPress = function (evt) {
+      window.utils.isEscEvent(evt, onCloseButtonClick);
+    };
+
+    successButton.addEventListener('click', onCloseButtonClick);
     document.addEventListener('keydown', onSuccessMessageEscPress);
-    document.addEventListener('click', onSuccessButtonClick);
+    document.addEventListener('click', onCloseButtonClick);
   };
 
   // Функция callback показывает сообщение о неуспешной отправке данных формы на сервер
@@ -100,20 +95,19 @@
     renderMessage(errorMessage);
     var errorButton = createMessage('error').button;
 
-    var onErrorButtonClick = function () {
+    var onCloseButtonClick = function () {
       errorMessage.parentNode.removeChild(errorMessage);
-      errorButton.removeEventListener('click', onErrorButtonClick);
+      errorButton.removeEventListener('click', onCloseButtonClick);
       document.removeEventListener('keydown', onErrorMessageEscPress);
-      document.removeEventListener('click', onErrorButtonClick);
-    };
-    var onErrorMessageEscPress = function (evt) {
-      if (evt.keyCode === ESC_KEYCODE) {
-        onErrorButtonClick();
-      }
+      document.removeEventListener('click', onCloseButtonClick);
     };
 
-    errorButton.addEventListener('click', onErrorButtonClick);
+    var onErrorMessageEscPress = function (evt) {
+      window.utils.isEscEvent(evt, onCloseButtonClick);
+    };
+
+    errorButton.addEventListener('click', onCloseButtonClick);
     document.addEventListener('keydown', onErrorMessageEscPress);
-    document.addEventListener('click', onErrorButtonClick);
+    document.addEventListener('click', onCloseButtonClick);
   };
 })();
