@@ -50,33 +50,40 @@
     }
   };
 
+  // Массив после сортировки изображений
+  var sortedPictures = [];
+
   // Функция сортирует и отрисовывает фотографии в соответствии с заданным критерием
   var updatePictures = function (begin, end) {
-    window.picture(pictures
-      .slice(begin, end)
-      .sort(function (left, right) {
-        var commentsDiff = commentsDiff === 0 ? urlsComparator(left.url, right.url) : right.comments.length - left.comments.length;
+    sortedPictures = pictures
+    .slice(begin, end)
+    .sort(function (left, right) {
+      var commentsDiff = commentsDiff === 0 ? urlsComparator(left.url, right.url) : right.comments.length - left.comments.length;
 
-        return commentsDiff;
-      }));
+      return commentsDiff;
+    });
+    window.picture(sortedPictures);
   };
 
   popularFilterButton.addEventListener('click', function () {
     changeButtonClass(popularFilterButton);
     clearOldPictures();
     window.debounce(window.picture(pictures));
+    showPicturePreview(pictures);
   });
 
   newFilterButton.addEventListener('click', function () {
     changeButtonClass(newFilterButton);
     clearOldPictures();
     window.debounce(updatePictures(firstRandomIndex, endRandomIndex));
+    showPicturePreview(sortedPictures);
   });
 
   discussedFilterButton.addEventListener('click', function () {
     changeButtonClass(discussedFilterButton);
     clearOldPictures();
     window.debounce(updatePictures(FIRST_INDEX));
+    showPicturePreview(sortedPictures);
   });
 
   // Массив будет заполняться загруженными данными (фотографиями) с сервера
@@ -87,7 +94,7 @@
     pictures = data;
     window.picture(pictures);
     showFiltersBlock();
-    window.gallery();
+    showPicturePreview(pictures);
   };
 
   // Функция выводит сообщение об ошибке при загрузке данных с сервера
@@ -114,10 +121,10 @@
   };
 
   // Обработчик события клика по изображению для показа изображения в полноэкранном режиме
-  var onUsersPictureClick = function (index, array) {
+  var onUsersPictureClick = function (index, array, updateArray) {
     var closeButton = document.querySelector('.big-picture__cancel');
     array[index].addEventListener('click', function () {
-      window.preview(pictures[index]);
+      window.preview(updateArray[index]);
     });
 
     var onCloseButtonClick = function () {
@@ -133,10 +140,11 @@
     document.addEventListener('keydown', onImageEscPress);
   };
 
-  window.gallery = function () {
+  // Функция показывает изображение в полноэкранном режиме
+  var showPicturePreview = function (updateArray) {
     var images = addUsersPicture();
     for (var i = 0; i < images.length; i++) {
-      onUsersPictureClick(i, images);
+      onUsersPictureClick(i, images, updateArray);
     }
   };
 })();
