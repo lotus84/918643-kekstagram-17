@@ -8,9 +8,6 @@
   var commentsList = imageBig.querySelector('.social__comments');
   var firstComment = commentsList.querySelector('.social__comment');
 
-  // Показываем увеличенное изображение
-  imageBig.classList.remove('hidden');
-
   // Удаляем все дефолтные комментарии из разметки
   while (commentsList.firstChild) {
     commentsList.removeChild(commentsList.firstChild);
@@ -56,5 +53,8 @@
     descriptionImg.textContent = bigPicture.description;
 
     addComments(bigPicture.comments);
+
+    // Показываем увеличенное изображение
+    imageBig.classList.remove('hidden');
   };
 })();
