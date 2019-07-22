@@ -134,7 +134,7 @@
 
   // Функция показывает изображение в полноэкранном режиме
   var showPicturePreview = function (updateArray) {
-    var images = Array.from(document.querySelectorAll('.picture__img'));
+    var images = Array.from(document.querySelectorAll('.picture'));
     for (var i = 0; i < images.length; i++) {
       onUsersPictureClick(i, images, updateArray);
     }
