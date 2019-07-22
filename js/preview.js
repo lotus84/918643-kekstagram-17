@@ -2,8 +2,8 @@
 
 // Модуль для отрисовки увеличенного изображения
 (function () {
-  var COUNT_COMMENTS = 5;
   var STEP = 5;
+  var countComments = 5;
   var body = document.querySelector('body');
   var imageBig = document.querySelector('.big-picture');
   var commentLoader = imageBig.querySelector('.social__comments-loader');
@@ -45,11 +45,11 @@
   var showComments = function () {
     var usersComments = Array.from(commentsList.querySelectorAll('.social__comment'));
 
-    if (COUNT_COMMENTS < usersComments.length) {
-      for (var i = 0; i < COUNT_COMMENTS; i++) {
+    if (countComments < usersComments.length) {
+      for (var i = 0; i < countComments; i++) {
         usersComments[i].classList.remove('visually-hidden');
       }
-      COUNT_COMMENTS = COUNT_COMMENTS + STEP;
+      countComments = countComments + STEP;
     } else {
       for (var k = 0; k < usersComments.length; k++) {
         usersComments[k].classList.remove('visually-hidden');
@@ -76,7 +76,7 @@
 
       addComments(bigPicture.comments);
 
-      if (bigPicture.comments.length < COUNT_COMMENTS) {
+      if (bigPicture.comments.length < countComments) {
         commentLoader.classList.add('hidden');
       }
 
@@ -90,7 +90,7 @@
     closeBigImg: function () {
       imageBig.classList.add('hidden');
       commentLoader.classList.remove('hidden');
-      COUNT_COMMENTS = 5;
+      countComments = 5;
       body.classList.remove('modal-open');
     }
   };
