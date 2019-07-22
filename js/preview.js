@@ -3,7 +3,7 @@
 // Модуль для отрисовки увеличенного изображения
 (function () {
   var imageBig = document.querySelector('.big-picture');
-  var commentCount = imageBig.querySelector('.social__comment-count');
+  // var commentCount = imageBig.querySelector('.social__comment-count');
   var commentLoader = imageBig.querySelector('.social__comments-loader');
   var commentsList = imageBig.querySelector('.social__comments');
   var firstComment = commentsList.querySelector('.social__comment');
@@ -14,8 +14,8 @@
   }
 
   // Прячем блоки счётчика комментариев и загрузки новых комментариев
-  commentCount.classList.add('visually-hidden');
-  commentLoader.classList.add('visually-hidden');
+  // commentCount.classList.add('visually-hidden');
+  // commentLoader.classList.add('hidden');
 
   // Функция отрисовывает комментарий и возвращает его
   var renderComment = function (comment) {
@@ -24,6 +24,7 @@
     var commentText = commentElement.querySelector('.social__text');
 
     commentAvatar.src = comment.avatar;
+    commentAvatar.alt = comment.name;
     commentText.textContent = comment.message;
 
     return commentElement;
