@@ -113,23 +113,15 @@
   // Вызываем функцию загрузки данных с сервера
   window.backend.load(onSuccessLoad, onErrorLoad);
 
-  // Функция заполняет массив фотографиями пользователей
-  var addUsersPicture = function () {
-    var usersPictures = Array.from(document.querySelectorAll('.picture__img'));
-
-    return usersPictures;
-  };
-
   // Обработчик события клика по изображению для показа изображения в полноэкранном режиме
   var onUsersPictureClick = function (index, array, updateArray) {
     var closeButton = document.querySelector('.big-picture__cancel');
     array[index].addEventListener('click', function () {
-      window.preview(updateArray[index]);
+      window.preview.createBigImg(updateArray[index]);
     });
 
     var onCloseButtonClick = function () {
-      var imageBig = document.querySelector('.big-picture');
-      imageBig.classList.add('hidden');
+      window.preview.closeBigImg();
     };
 
     var onImageEscPress = function (evt) {
@@ -142,7 +134,7 @@
 
   // Функция показывает изображение в полноэкранном режиме
   var showPicturePreview = function (updateArray) {
-    var images = addUsersPicture();
+    var images = Array.from(document.querySelectorAll('.picture__img'));
     for (var i = 0; i < images.length; i++) {
       onUsersPictureClick(i, images, updateArray);
     }
