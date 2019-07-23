@@ -2,30 +2,46 @@
 
 // Модуль, который работает с галереей изображений
 (function () {
-  var FIRST_INDEX = 0;
-  var MIDDLE_INDEX = 14;
-  var POPULAR_PHOTO_COUNT = 10;
-  var firstRandomIndex = window.utils.getRandomNumber(FIRST_INDEX, MIDDLE_INDEX);
-  var endRandomIndex = firstRandomIndex + POPULAR_PHOTO_COUNT;
+  var PHOTO_COUNT = 10;
   var imgFiltersBlock = document.querySelector('.img-filters');
   var imgFiltersForm = imgFiltersBlock.querySelector('.img-filters__form');
-  var popularFilterButton = imgFiltersBlock.querySelector('#filter-popular');
-  var newFilterButton = imgFiltersBlock.querySelector('#filter-new');
-  var discussedFilterButton = imgFiltersBlock.querySelector('#filter-discussed');
 
   // При завершении загрузки изображений с сервера показываем блок с кнопками-фильтрами
   var showFiltersBlock = function () {
     imgFiltersBlock.classList.remove('img-filters--inactive');
   };
 
+  // Находим все кнопки-фильтры
+  var allFilterButtons = imgFiltersForm.querySelectorAll('button');
+
+  // Обработчик события клик, который отвечает за изменение сортировки изображений
+  var onFilterButtonsClick = function (evt) {
+    changeButtonClass(evt.target);
+    clearOldPictures();
+    setCurrentFilter(evt);
+  };
+
+  for (var i = 0; i < allFilterButtons.length; i++) {
+    allFilterButtons[i].addEventListener('click', onFilterButtonsClick);
+  }
+
+  // Функция отвечает за применение сортировки фотографий соответствующей нажатой кнопке
+  var setCurrentFilter = function (evt) {
+    var currentFilter = evt.target.id.split('-')[1];
+    if (currentFilter === 'popular') {
+      window.debounce(window.picture(pictures));
+    }
+    if (currentFilter === 'new') {
+      window.debounce(window.picture(getNewRandomPictures()));
+    }
+    if (currentFilter === 'discussed') {
+      window.debounce(window.picture(getDiscussedPictures()));
+    }
+  };
+
   // Функция меняет класс active у нажатой кнопки
   var changeButtonClass = function (activeButton) {
-    var buttons = Array.from(imgFiltersForm.querySelectorAll('.img-filters__button'));
-
-    for (var i = 0; i < buttons.length; i++) {
-      buttons[i].classList.remove('img-filters__button--active');
-    }
-
+    imgFiltersForm.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
     activeButton.classList.add('img-filters__button--active');
   };
 
@@ -34,8 +50,8 @@
     var similarListElement = document.querySelector('.pictures');
     var usersPictures = Array.from(similarListElement.querySelectorAll('a'));
 
-    for (var i = 0; i < usersPictures.length; i++) {
-      similarListElement.removeChild(usersPictures[i]);
+    for (var j = 0; j < usersPictures.length; j++) {
+      similarListElement.removeChild(usersPictures[j]);
     }
   };
 
@@ -50,41 +66,35 @@
     }
   };
 
-  // Массив после сортировки изображений
-  var sortedPictures = [];
-
-  // Функция сортирует и отрисовывает фотографии в соответствии с заданным критерием
-  var updatePictures = function (begin, end) {
-    sortedPictures = pictures
-    .slice(begin, end)
+  // Функция сортирует фотографии в порядке уменьшения количества комментариев
+  var getDiscussedPictures = function () {
+    var discussedPictures = pictures
+    .slice()
     .sort(function (left, right) {
       var commentsDiff = commentsDiff === 0 ? urlsComparator(left.url, right.url) : right.comments.length - left.comments.length;
 
       return commentsDiff;
     });
-    window.picture(sortedPictures);
+
+    return discussedPictures;
   };
 
-  popularFilterButton.addEventListener('click', function () {
-    changeButtonClass(popularFilterButton);
-    clearOldPictures();
-    window.debounce(window.picture(pictures));
-    showPicturePreview(pictures);
-  });
+  // Функция возвращает 10 новых неповторяющихся фотографий
+  var getNewRandomPictures = function () {
+    var newPictures = [];
+    var uniqueIndexesArray = [];
 
-  newFilterButton.addEventListener('click', function () {
-    changeButtonClass(newFilterButton);
-    clearOldPictures();
-    window.debounce(updatePictures(firstRandomIndex, endRandomIndex));
-    showPicturePreview(sortedPictures);
-  });
+    while (newPictures.length < PHOTO_COUNT) {
+      var newPicture = window.utils.getRandomItemFromArray(pictures);
+      var indexArray = pictures.indexOf(newPicture);
+      if (uniqueIndexesArray.indexOf(indexArray) === -1) {
+        uniqueIndexesArray.push(indexArray);
+        newPictures.push(newPicture);
+      }
+    }
 
-  discussedFilterButton.addEventListener('click', function () {
-    changeButtonClass(discussedFilterButton);
-    clearOldPictures();
-    window.debounce(updatePictures(FIRST_INDEX));
-    showPicturePreview(sortedPictures);
-  });
+    return newPictures;
+  };
 
   // Массив будет заполняться загруженными данными (фотографиями) с сервера
   var pictures = [];
@@ -94,7 +104,6 @@
     pictures = data;
     window.picture(pictures);
     showFiltersBlock();
-    showPicturePreview(pictures);
   };
 
   // Функция выводит сообщение об ошибке при загрузке данных с сервера
@@ -112,31 +121,4 @@
 
   // Вызываем функцию загрузки данных с сервера
   window.backend.load(onSuccessLoad, onErrorLoad);
-
-  // Обработчик события клика по изображению для показа изображения в полноэкранном режиме
-  var onUsersPictureClick = function (index, array, updateArray) {
-    var closeButton = document.querySelector('.big-picture__cancel');
-    array[index].addEventListener('click', function () {
-      window.preview.createBigImg(updateArray[index]);
-    });
-
-    var onCloseButtonClick = function () {
-      window.preview.closeBigImg();
-    };
-
-    var onImageEscPress = function (evt) {
-      window.utils.isEscEvent(evt, onCloseButtonClick);
-    };
-
-    closeButton.addEventListener('click', onCloseButtonClick);
-    document.addEventListener('keydown', onImageEscPress);
-  };
-
-  // Функция показывает изображение в полноэкранном режиме
-  var showPicturePreview = function (updateArray) {
-    var images = Array.from(document.querySelectorAll('.picture'));
-    for (var i = 0; i < images.length; i++) {
-      onUsersPictureClick(i, images, updateArray);
-    }
-  };
 })();

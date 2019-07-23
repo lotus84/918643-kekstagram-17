@@ -61,37 +61,44 @@
   // Обработчик события клик по кнопке загрузки комментариев
   commentLoader.addEventListener('click', showComments);
 
-  window.preview = {
-    // Функция заполняет увеличенное изображение данными с сервера
-    createBigImg: function (bigPicture) {
-      var urlImg = imageBig.querySelector('.big-picture__img img');
-      var likesImg = imageBig.querySelector('.likes-count');
-      var commentsImg = imageBig.querySelector('.comments-count');
-      var descriptionImg = imageBig.querySelector('.social__caption');
+  var onCloseButtonClick = function () {
+    imageBig.classList.add('hidden');
+    commentLoader.classList.remove('hidden');
+    countComments = 5;
+    body.classList.remove('modal-open');
+  };
 
-      urlImg.src = bigPicture.url;
-      likesImg.textContent = bigPicture.likes;
-      commentsImg.textContent = bigPicture.comments.length;
-      descriptionImg.textContent = bigPicture.description;
+  var onImageEscPress = function (evt) {
+    window.utils.isEscEvent(evt, onCloseButtonClick);
+  };
 
-      addComments(bigPicture.comments);
+  // Функция заполняет увеличенное изображение данными с сервера
+  window.preview = function (bigPicture) {
+    var urlImg = imageBig.querySelector('.big-picture__img img');
+    var likesImg = imageBig.querySelector('.likes-count');
+    var commentsImg = imageBig.querySelector('.comments-count');
+    var descriptionImg = imageBig.querySelector('.social__caption');
+    var closeButton = document.querySelector('.big-picture__cancel');
 
-      if (bigPicture.comments.length < countComments) {
-        commentLoader.classList.add('hidden');
-      }
+    urlImg.src = bigPicture.url;
+    likesImg.textContent = bigPicture.likes;
+    commentsImg.textContent = bigPicture.comments.length;
+    descriptionImg.textContent = bigPicture.description;
 
-      showComments();
+    addComments(bigPicture.comments);
 
-      // Показываем увеличенное изображение
-      imageBig.classList.remove('hidden');
-      body.classList.add('modal-open');
-    },
-    // Функция закрывает увеличенное изображение
-    closeBigImg: function () {
-      imageBig.classList.add('hidden');
-      commentLoader.classList.remove('hidden');
-      countComments = 5;
-      body.classList.remove('modal-open');
+    if (bigPicture.comments.length < countComments) {
+      commentLoader.classList.add('hidden');
     }
+
+    showComments();
+
+    // Показываем увеличенное изображение
+    imageBig.classList.remove('hidden');
+    body.classList.add('modal-open');
+
+    // Закрываем увеличенное изображение
+    closeButton.addEventListener('click', onCloseButtonClick);
+    document.addEventListener('keydown', onImageEscPress);
   };
 })();
