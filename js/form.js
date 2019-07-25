@@ -3,7 +3,7 @@
 (function () {
   // Открытие и закрытие формы загрузки и редактирования изображения
   var form = document.querySelector('.img-upload__form');
-  var formPopupOpen = form.querySelector('#upload-file');
+  var fileChooser = form.querySelector('#upload-file');
   var formPopup = form.querySelector('.img-upload__overlay');
   var formPopupClose = form.querySelector('#upload-cancel');
   var commentTextarea = formPopup.querySelector('.text__description');
@@ -27,13 +27,14 @@
 
   // Функция закрывает форму загрузки и редактирования изображения
   var closeFormPopup = function () {
+    form.reset();
     formPopup.classList.add('hidden');
     imagePreview.setAttribute('style', 'filter: initial');
     document.removeEventListener('keydown', onFormPopupEscPress);
-    form.reset();
   };
 
-  formPopupOpen.addEventListener('change', function () {
+  fileChooser.addEventListener('change', function () {
+    window.uploadImg(fileChooser, imagePreview);
     openFormPopup();
   });
 
