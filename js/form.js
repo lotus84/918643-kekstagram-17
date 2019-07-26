@@ -20,6 +20,8 @@
 
   // Функция открывает форму загрузки и редактирования изображения
   var openFormPopup = function () {
+    window.zoom();
+    window.edit();
     formPopup.classList.remove('hidden');
     effectLevel.classList.add('hidden');
     document.addEventListener('keydown', onFormPopupEscPress);

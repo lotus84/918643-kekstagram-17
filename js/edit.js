@@ -134,4 +134,11 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  // Функция устанавливает эффект по умолчанию
+  window.edit = function () {
+    imagePreview.classList.remove('effects__preview--' + currentEffect);
+    imagePreview.classList.add('effects__preview--none');
+    currentEffect = 'none';
+  };
 })();
