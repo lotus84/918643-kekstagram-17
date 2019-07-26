@@ -14,6 +14,20 @@
     },
     getRandomItemFromArray: function (arr) {
       return arr[window.utils.getRandomNumber(0, arr.length - 1)];
+    },
+    // Функция проверяет массив на уникальность элементов.
+    // Если все элементы массива уникальны (неповторяются), то функция вернет true,
+    // в противном случае вернет false
+    checkUniqueArray: function (array) {
+      var n = array.length;
+      for (var i = 0; i < n - 1; i++) {
+        for (var j = i + 1; j < n; j++) {
+          if (array[i] === array[j]) {
+            return false;
+          }
+        }
+      }
+      return true;
     }
   };
 })();
