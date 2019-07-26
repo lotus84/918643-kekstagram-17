@@ -20,7 +20,7 @@
     }
 
     zoomValueInput.setAttribute('value', newZoomValue + '%');
-    imagePreview.setAttribute('style', 'transform: scale(' + (newZoomValue / 100) + ')');
+    imagePreview.style.transform = 'scale(' + (newZoomValue / 100) + ')';
   };
 
   var setUnzoomValue = function () {
@@ -32,7 +32,7 @@
     }
 
     zoomValueInput.setAttribute('value', newZoomValue + '%');
-    imagePreview.setAttribute('style', 'transform: scale(' + (newZoomValue / 100) + ')');
+    imagePreview.style.transform = 'scale(' + (newZoomValue / 100) + ')';
   };
 
   zoomButton.addEventListener('click', function () {
@@ -45,6 +45,6 @@
 
   window.zoom = function () {
     zoomValueInput.setAttribute('value', VALUE_INITIAL + '%');
-    imagePreview.setAttribute('style', 'transform: scale(' + (VALUE_INITIAL / 100) + ')');
+    imagePreview.style.transform = 'scale(' + (VALUE_INITIAL / 100) + ')';
   };
 })();
