@@ -31,7 +31,7 @@
   var closeFormPopup = function () {
     form.reset();
     formPopup.classList.add('hidden');
-    imagePreview.setAttribute('style', 'filter: initial');
+    imagePreview.style.filter = 'initial';
     document.removeEventListener('keydown', onFormPopupEscPress);
   };
 
@@ -47,6 +47,10 @@
   // Отправка данных формы на сервер
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
+    window.validity.checkValidity();
+    if (window.validity.isStopSubmit) {
+      evt.preventDefault();
+    }
     window.backend.upload(new FormData(form), onSuccessMessage, onErrorMessage);
     closeFormPopup();
   });
