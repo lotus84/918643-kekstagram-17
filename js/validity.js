@@ -9,7 +9,7 @@
   var inputHashtag = document.querySelector('.text__hashtags');
 
   // Добавляем обработчик события input для поля ввода хэштегов
-  inputHashtag.addEventListener('input', function (evt) {
+  inputHashtag.addEventListener('input', function () {
     window.validity.checkValidity();
   });
 
