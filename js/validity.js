@@ -16,10 +16,11 @@
   window.validity = {
     isStopSubmit: false,
     checkValidity: function () {
-      var hashtags = inputHashtag.value.split(' ');
+      // Проверяем, что поле input не пустое
+      if (inputHashtag.value.trim() !== '') {
 
-      // Проверяем, что массив хэштегов не пустой
-      if (hashtags.length !== 0) {
+        var hashtags = inputHashtag.value.split(' ');
+
         // Приводим все элементы к нижниму регистру, т.о. теги нечувствительны к регистру
         var copyHashtags = [];
 
@@ -54,6 +55,9 @@
             window.validity.isStopSubmit = false;
           }
         }
+      } else {
+        inputHashtag.setCustomValidity('');
+        window.validity.isStopSubmit = false;
       }
     }
   };
