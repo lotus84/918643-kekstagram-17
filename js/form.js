@@ -10,6 +10,8 @@
   var hashtagInput = formPopup.querySelector('.text__hashtags');
   var imagePreview = document.querySelector('.img-upload__preview img');
   var effectLevel = document.querySelector('.img-upload__effect-level');
+  var zoomButton = document.querySelector('.scale__control--bigger');
+  var unzoomButton = document.querySelector('.scale__control--smaller');
 
   // Функция закрывает форму при нажатии на Esc
   var onFormPopupEscPress = function (evt) {
@@ -20,8 +22,12 @@
 
   // Функция открывает форму загрузки и редактирования изображения
   var openFormPopup = function () {
+    window.zoom.setInitialZoom();
+    window.edit();
     formPopup.classList.remove('hidden');
     effectLevel.classList.add('hidden');
+    zoomButton.addEventListener('click', window.zoom.setZoomValue);
+    unzoomButton.addEventListener('click', window.zoom.setUnzoomValue);
     document.addEventListener('keydown', onFormPopupEscPress);
   };
 
@@ -29,7 +35,9 @@
   var closeFormPopup = function () {
     form.reset();
     formPopup.classList.add('hidden');
-    imagePreview.setAttribute('style', 'filter: initial');
+    imagePreview.style.filter = 'initial';
+    zoomButton.removeEventListener('click', window.zoom.setZoomValue);
+    unzoomButton.removeEventListener('click', window.zoom.setUnzoomValue);
     document.removeEventListener('keydown', onFormPopupEscPress);
   };
 
@@ -45,8 +53,11 @@
   // Отправка данных формы на сервер
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.upload(new FormData(form), onSuccessMessage, onErrorMessage);
-    closeFormPopup();
+    window.validity.checkValidity();
+    if (!window.validity.isStopSubmit) {
+      window.backend.upload(new FormData(form), onSuccessMessage, onErrorMessage);
+      closeFormPopup();
+    }
   });
 
   // Создание сообщения об успешной/неуспешной загрузке изображения

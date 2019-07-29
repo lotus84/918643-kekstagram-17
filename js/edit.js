@@ -23,11 +23,11 @@
   };
   var setInitialState = function () {
     if (currentEffect === 'none') {
-      imagePreview.setAttribute('style', 'filter: initial');
+      imagePreview.style.filter = 'initial';
     } else {
       pinValue = PIN_VALUE_INITIAL;
       valueInput.setAttribute('value', pinValue);
-      imagePreview.setAttribute('style', effectFilters[currentEffect]());
+      imagePreview.style.filter = effectFilters[currentEffect]();
       pinElem.style.left = PIN_INITIAL_X;
       fillSliderElem.style.width = PIN_INITIAL_X;
     }
@@ -55,22 +55,22 @@
   var effectFilters = {
     chrome: function () {
       var level = pinValue / 100;
-      return 'filter: grayscale(' + level + ')';
+      return 'grayscale(' + level + ')';
     },
     sepia: function () {
       var level = pinValue / 100;
-      return 'filter: sepia(' + level + ')';
+      return 'sepia(' + level + ')';
     },
     marvin: function () {
-      return 'filter: invert(' + pinValue + '%)';
+      return 'invert(' + pinValue + '%)';
     },
     phobos: function () {
       var level = (pinValue * 3) / 100;
-      return 'filter: blur(' + level + 'px)';
+      return 'blur(' + level + 'px)';
     },
     heat: function () {
       var level = (pinValue * 2) / 100 + 1;
-      return 'filter: brightness(' + level + ')';
+      return 'brightness(' + level + ')';
     }
   };
   var effectLevelFieldset = document.querySelector('.effect-level');
@@ -91,7 +91,7 @@
     valueInput.setAttribute('value', pinValue);
   };
   var setFilterValue = function () {
-    imagePreview.setAttribute('style', effectFilters[currentEffect]());
+    imagePreview.style.filter = effectFilters[currentEffect]();
   };
 
   pinElem.addEventListener('mousedown', function (evt) {
@@ -134,4 +134,11 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  // Функция устанавливает эффект по умолчанию
+  window.edit = function () {
+    imagePreview.classList.remove('effects__preview--' + currentEffect);
+    imagePreview.classList.add('effects__preview--none');
+    currentEffect = 'none';
+  };
 })();
