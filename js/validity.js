@@ -34,29 +34,37 @@
 
           if (hashtag[0] !== '#') {
             inputHashtag.setCustomValidity('Хэш-тег должен начинаться с символа # (решётка)');
+            inputHashtag.style.border = '2px solid red';
             window.validity.isStopSubmit = true;
           } else if (hashtag.indexOf('#', 2) !== -1) {
             inputHashtag.setCustomValidity('Хэш-теги должны разделяться пробелами');
+            inputHashtag.style.border = '2px solid red';
             window.validity.isStopSubmit = true;
           } else if (hashtags.length > MAX_COUNT) {
             inputHashtag.setCustomValidity('Нельзя указывать больше пяти хэш-тегов');
+            inputHashtag.style.border = '2px solid red';
             window.validity.isStopSubmit = true;
           } else if (hashtag.length < MIN_LENGTH_HASHTAG) {
             inputHashtag.setCustomValidity('Хэш-тег не может состоять только из одной решётки');
+            inputHashtag.style.border = '2px solid red';
             window.validity.isStopSubmit = true;
           } else if (hashtag.length > MAX_LENGTH_HASHTAG) {
             inputHashtag.setCustomValidity('Максимальная длина одного хэш-тега 20 символов, включая решётку');
+            inputHashtag.style.border = '2px solid red';
             window.validity.isStopSubmit = true;
           } else if (!window.utils.checkUniqueArray(copyHashtags)) {
             inputHashtag.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды (теги нечувствительны к регистру)');
+            inputHashtag.style.border = '2px solid red';
             window.validity.isStopSubmit = true;
           } else {
             inputHashtag.setCustomValidity('');
+            inputHashtag.style.border = 'none';
             window.validity.isStopSubmit = false;
           }
         }
       } else {
         inputHashtag.setCustomValidity('');
+        inputHashtag.style.border = 'none';
         window.validity.isStopSubmit = false;
       }
     }
