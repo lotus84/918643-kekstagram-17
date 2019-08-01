@@ -22,9 +22,9 @@
 
   // Функция открывает форму загрузки и редактирования изображения
   var openFormPopup = function () {
+    formPopup.classList.remove('hidden');
     window.zoom.setInitialZoom();
     window.edit();
-    formPopup.classList.remove('hidden');
     effectLevel.classList.add('hidden');
     zoomButton.addEventListener('click', window.zoom.setZoomValue);
     unzoomButton.addEventListener('click', window.zoom.setUnzoomValue);
