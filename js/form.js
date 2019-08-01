@@ -12,6 +12,7 @@
   var effectLevel = document.querySelector('.img-upload__effect-level');
   var zoomButton = document.querySelector('.scale__control--bigger');
   var unzoomButton = document.querySelector('.scale__control--smaller');
+  var imagePreviewEffects = Array.from(formPopup.querySelectorAll('.effects__preview'));
 
   // Функция закрывает форму при нажатии на Esc
   var onFormPopupEscPress = function (evt) {
@@ -43,7 +44,7 @@
   };
 
   fileChooser.addEventListener('change', function () {
-    window.uploadImg(fileChooser, imagePreview);
+    window.uploadImg(fileChooser, imagePreview, imagePreviewEffects);
     openFormPopup();
   });
 

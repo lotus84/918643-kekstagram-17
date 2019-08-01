@@ -4,7 +4,7 @@
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-  window.uploadImg = function (inputTag, imgTag) {
+  window.uploadImg = function (inputTag, imgTag, backgroundTags) {
     var file = inputTag.files[0];
     var fileName = file.name.toLowerCase();
     var matches = FILE_TYPES.some(function (it) {
@@ -16,6 +16,9 @@
 
       reader.addEventListener('load', function () {
         imgTag.src = reader.result;
+        backgroundTags.forEach(function (it) {
+          it.style.backgroundImage = 'url(' + reader.result + ')';
+        });
       });
 
       reader.readAsDataURL(file);
