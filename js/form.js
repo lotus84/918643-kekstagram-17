@@ -34,6 +34,7 @@
   // Функция закрывает форму загрузки и редактирования изображения
   var closeFormPopup = function () {
     form.reset();
+    window.validity.reset();
     formPopup.classList.add('hidden');
     imagePreview.style.filter = 'initial';
     zoomButton.removeEventListener('click', window.zoom.setZoomValue);

@@ -15,6 +15,11 @@
 
   window.validity = {
     isStopSubmit: false,
+    reset: function () {
+      inputHashtag.setCustomValidity('');
+      inputHashtag.style.border = 'none';
+      window.validity.isStopSubmit = false;
+    },
     checkValidity: function () {
       // Проверяем, что поле input не пустое
       if (inputHashtag.value.trim() !== '') {
