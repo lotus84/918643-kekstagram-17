@@ -76,16 +76,19 @@
     };
   };
 
+  var mainElement = document.querySelector('main');
+
   var renderMessage = function (element) {
-    var mainElement = document.querySelector('main');
     mainElement.appendChild(element);
   };
 
   // Функция callback показывает сообщение об успешной отправке данных формы на сервер
   var onSuccessMessage = function () {
-    var successMessage = createMessage('success').message;
+    var successMessageObject = createMessage('success');
+    var successMessage = successMessageObject.message;
+    var successButton = successMessageObject.button;
+
     renderMessage(successMessage);
-    var successButton = createMessage('success').button;
 
     var onCloseButtonClick = function () {
       successMessage.parentNode.removeChild(successMessage);
@@ -105,9 +108,11 @@
 
   // Функция callback показывает сообщение о неуспешной отправке данных формы на сервер
   var onErrorMessage = function () {
-    var errorMessage = createMessage('error').message;
+    var errorMessageObject = createMessage('error');
+    var errorMessage = errorMessageObject.message;
+    var errorButton = errorMessageObject.button;
+
     renderMessage(errorMessage);
-    var errorButton = createMessage('error').button;
 
     var onCloseButtonClick = function () {
       errorMessage.parentNode.removeChild(errorMessage);
