@@ -55,7 +55,7 @@
   // Отправка данных формы на сервер
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.validity.checkValidity();
+    window.validity.check();
     if (!window.validity.isStopSubmit) {
       window.backend.upload(new FormData(form), onSuccessMessage, onErrorMessage);
       closeFormPopup();
