@@ -3,7 +3,8 @@
 // Модуль для отрисовки увеличенного изображения
 (function () {
   var STEP = 5;
-  var countComments = 5;
+  var INITIAL_COUNT_COMMENTS = 5;
+  var currentCountComments = INITIAL_COUNT_COMMENTS;
   var body = document.querySelector('body');
   var imageBig = document.querySelector('.big-picture');
   var commentLoader = imageBig.querySelector('.social__comments-loader');
@@ -45,11 +46,11 @@
   var showComments = function () {
     var usersComments = Array.from(commentsList.querySelectorAll('.social__comment'));
 
-    if (countComments < usersComments.length) {
-      for (var i = 0; i < countComments; i++) {
+    if (currentCountComments < usersComments.length) {
+      for (var i = 0; i < currentCountComments; i++) {
         usersComments[i].classList.remove('visually-hidden');
       }
-      countComments = countComments + STEP;
+      currentCountComments = currentCountComments + STEP;
     } else {
       for (var k = 0; k < usersComments.length; k++) {
         usersComments[k].classList.remove('visually-hidden');
@@ -64,7 +65,7 @@
   var onCloseButtonClick = function () {
     imageBig.classList.add('hidden');
     commentLoader.classList.remove('hidden');
-    countComments = 5;
+    currentCountComments = INITIAL_COUNT_COMMENTS;
     body.classList.remove('modal-open');
   };
 
@@ -87,7 +88,7 @@
 
     addComments(bigPicture.comments);
 
-    if (bigPicture.comments.length < countComments) {
+    if (bigPicture.comments.length < currentCountComments) {
       commentLoader.classList.add('hidden');
     }
 
