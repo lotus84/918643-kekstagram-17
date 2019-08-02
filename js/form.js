@@ -24,11 +24,11 @@
   // Функция открывает форму загрузки и редактирования изображения
   var openFormPopup = function () {
     formPopup.classList.remove('hidden');
-    window.zoom.setInitialZoom();
+    window.zoom.setInitial();
     window.editImg.setInitialEffect();
     effectLevel.classList.add('hidden');
-    zoomButton.addEventListener('click', window.zoom.setZoomValue);
-    unzoomButton.addEventListener('click', window.zoom.setUnzoomValue);
+    zoomButton.addEventListener('click', window.zoom.onZoomButtonClick);
+    unzoomButton.addEventListener('click', window.zoom.onUnzoomButtonClick);
     document.addEventListener('keydown', onFormPopupEscPress);
   };
 
@@ -38,8 +38,8 @@
     window.validity.reset();
     formPopup.classList.add('hidden');
     imagePreview.style.filter = 'initial';
-    zoomButton.removeEventListener('click', window.zoom.setZoomValue);
-    unzoomButton.removeEventListener('click', window.zoom.setUnzoomValue);
+    zoomButton.removeEventListener('click', window.zoom.onZoomButtonClick);
+    unzoomButton.removeEventListener('click', window.zoom.onUnzoomButtonClick);
     document.removeEventListener('keydown', onFormPopupEscPress);
   };
 

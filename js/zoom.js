@@ -10,11 +10,11 @@
   var imagePreview = document.querySelector('.img-upload__preview img');
 
   window.zoom = {
-    setInitialZoom: function () {
+    setInitial: function () {
       zoomValueInput.setAttribute('value', VALUE_INITIAL + '%');
       imagePreview.style.transform = 'scale(' + (VALUE_INITIAL / 100) + ')';
     },
-    setZoomValue: function () {
+    onZoomButtonClick: function () {
       var currentZoomValue = Number.parseInt(zoomValueInput.value, 10);
       var newZoomValue = currentZoomValue + VALUE_STEP;
 
@@ -25,7 +25,7 @@
       zoomValueInput.setAttribute('value', newZoomValue + '%');
       imagePreview.style.transform = 'scale(' + (newZoomValue / 100) + ')';
     },
-    setUnzoomValue: function () {
+    onUnzoomButtonClick: function () {
       var currentZoomValue = Number.parseInt(zoomValueInput.value, 10);
       var newZoomValue = currentZoomValue - VALUE_STEP;
 

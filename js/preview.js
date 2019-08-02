@@ -60,7 +60,9 @@
   };
 
   // Обработчик события клик по кнопке загрузки комментариев
-  commentLoader.addEventListener('click', showComments);
+  commentLoader.addEventListener('click', function () {
+    showComments();
+  });
 
   var onCloseButtonClick = function () {
     imageBig.classList.add('hidden');
