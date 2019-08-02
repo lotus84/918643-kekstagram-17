@@ -27,7 +27,7 @@
     } else {
       pinValue = PIN_VALUE_INITIAL;
       valueInput.setAttribute('value', pinValue);
-      imagePreview.style.filter = effectFilters[currentEffect]();
+      imagePreview.style.filter = effectFilterMap[currentEffect]();
       pinElem.style.left = PIN_INITIAL_X;
       fillSliderElem.style.width = PIN_INITIAL_X;
     }
@@ -52,23 +52,23 @@
 
   // Регулирование интенсивности эффекта
   var pinValue;
-  var effectFilters = {
-    chrome: function () {
+  var effectFilterMap = {
+    'chrome': function () {
       var level = pinValue / 100;
       return 'grayscale(' + level + ')';
     },
-    sepia: function () {
+    'sepia': function () {
       var level = pinValue / 100;
       return 'sepia(' + level + ')';
     },
-    marvin: function () {
+    'marvin': function () {
       return 'invert(' + pinValue + '%)';
     },
-    phobos: function () {
+    'phobos': function () {
       var level = (pinValue * 3) / 100;
       return 'blur(' + level + 'px)';
     },
-    heat: function () {
+    'heat': function () {
       var level = (pinValue * 2) / 100 + 1;
       return 'brightness(' + level + ')';
     }
@@ -91,7 +91,7 @@
     valueInput.setAttribute('value', pinValue);
   };
   var setFilterValue = function () {
-    imagePreview.style.filter = effectFilters[currentEffect]();
+    imagePreview.style.filter = effectFilterMap[currentEffect]();
   };
 
   pinElem.addEventListener('mousedown', function (evt) {
