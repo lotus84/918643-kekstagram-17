@@ -25,7 +25,7 @@
   var openFormPopup = function () {
     formPopup.classList.remove('hidden');
     window.zoom.setInitialZoom();
-    window.edit();
+    window.editImg.setInitialEffect();
     effectLevel.classList.add('hidden');
     zoomButton.addEventListener('click', window.zoom.setZoomValue);
     unzoomButton.addEventListener('click', window.zoom.setUnzoomValue);
