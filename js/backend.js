@@ -5,6 +5,7 @@
   var URL_DATA = 'https://js.dump.academy/kekstagram/data';
   var URL_FORM = 'https://js.dump.academy/kekstagram';
   var TIMEOUT_VALUE = 10000;
+  var SUCCESS_CODE = 200;
 
   window.backend = {
     // Функция отправляет запрос на сервер для загрузки данных
@@ -14,7 +15,7 @@
       xhr.responseType = 'json';
 
       xhr.addEventListener('load', function () {
-        if (xhr.status === 200) {
+        if (xhr.status === SUCCESS_CODE) {
           onSuccess(xhr.response);
         } else {
           onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -42,7 +43,7 @@
       xhr.responseType = 'json';
 
       xhr.addEventListener('load', function () {
-        if (xhr.status === 200) {
+        if (xhr.status === SUCCESS_CODE) {
           onSuccess(xhr.response);
         } else {
           onError();
