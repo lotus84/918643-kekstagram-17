@@ -27,13 +27,13 @@
 
   var filterListMap = {
     'popular': function () {
-      window.debounce(window.picture(pictures));
+      window.debounce(window.picture.create(pictures));
     },
     'new': function () {
-      window.debounce(window.picture(getNewRandomPictures()));
+      window.debounce(window.picture.create(getNewRandomPictures()));
     },
     'discussed': function () {
-      window.debounce(window.picture(getDiscussedPictures()));
+      window.debounce(window.picture.create(getDiscussedPictures()));
     }
   };
 
@@ -106,7 +106,7 @@
   // Функция отрисовывает данные (фотографии), полученные с сервера
   var onSuccessLoad = function (data) {
     pictures = data;
-    window.picture(pictures);
+    window.picture.create(pictures);
     showFiltersBlock();
   };
 

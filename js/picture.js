@@ -23,13 +23,15 @@
   var similarListElement = document.querySelector('.pictures');
 
   // Функция заполняет блок DOM-элементами из массива
-  window.picture = function (pictures) {
-    var fragment = document.createDocumentFragment();
+  window.picture = {
+    create: function (pictures) {
+      var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < pictures.length; i++) {
-      fragment.appendChild(renderPicture(pictures[i]));
+      for (var i = 0; i < pictures.length; i++) {
+        fragment.appendChild(renderPicture(pictures[i]));
+      }
+
+      similarListElement.appendChild(fragment);
     }
-
-    similarListElement.appendChild(fragment);
   };
 })();
