@@ -136,14 +136,12 @@
   });
 
   // Функция устанавливает эффект по умолчанию
-  var inputRadioEffectNone = effectsList.querySelector('#effect-none');
-
   window.editImg = {
     setInitialEffect: function () {
       imagePreview.classList.remove('effects__preview--' + currentEffect);
-      imagePreview.classList.add('effects__preview--none');
-      currentEffect = 'none';
-      inputRadioEffectNone.setAttribute('checked', '');
+      currentEffect = effectsList.querySelector('.effects__radio[checked]').value;
+      imagePreview.classList.add('effects__preview--' + currentEffect);
+      setInitialState();
     }
   };
 })();

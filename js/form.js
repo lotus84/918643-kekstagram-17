@@ -9,7 +9,6 @@
   var commentTextarea = formPopup.querySelector('.text__description');
   var hashtagInput = formPopup.querySelector('.text__hashtags');
   var imagePreview = document.querySelector('.img-upload__preview img');
-  var effectLevel = document.querySelector('.img-upload__effect-level');
   var zoomButton = document.querySelector('.scale__control--bigger');
   var unzoomButton = document.querySelector('.scale__control--smaller');
   var imagePreviewEffects = Array.from(formPopup.querySelectorAll('.effects__preview'));
@@ -26,7 +25,6 @@
     formPopup.classList.remove('hidden');
     window.zoom.setInitial();
     window.editImg.setInitialEffect();
-    effectLevel.classList.add('hidden');
     zoomButton.addEventListener('click', window.zoom.onZoomButtonClick);
     unzoomButton.addEventListener('click', window.zoom.onUnzoomButtonClick);
     document.addEventListener('keydown', onFormPopupEscPress);
@@ -37,7 +35,6 @@
     form.reset();
     window.validity.reset();
     formPopup.classList.add('hidden');
-    imagePreview.style.filter = 'initial';
     zoomButton.removeEventListener('click', window.zoom.onZoomButtonClick);
     unzoomButton.removeEventListener('click', window.zoom.onUnzoomButtonClick);
     document.removeEventListener('keydown', onFormPopupEscPress);
