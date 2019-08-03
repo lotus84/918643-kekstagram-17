@@ -51,7 +51,7 @@
           if (hashtag[0] !== '#') {
             inputHashtag.setCustomValidity('Хэш-тег должен начинаться с символа # (решётка)');
             addValidityMessage(inputHashtag);
-          } else if (hashtag.indexOf('#', 2) !== -1) {
+          } else if (hashtag.lastIndexOf('#') > 0) {
             inputHashtag.setCustomValidity('Хэш-теги должны разделяться пробелами');
             addValidityMessage(inputHashtag);
           } else if (hashtags.length > MAX_COUNT) {
