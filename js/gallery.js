@@ -25,18 +25,22 @@
     allFilterButtons[i].addEventListener('click', onFilterButtonsClick);
   }
 
+  var filterListMap = {
+    'popular': function () {
+      window.debounce(window.picture.create(pictures));
+    },
+    'new': function () {
+      window.debounce(window.picture.create(getNewRandomPictures()));
+    },
+    'discussed': function () {
+      window.debounce(window.picture.create(getDiscussedPictures()));
+    }
+  };
+
   // Функция отвечает за применение сортировки фотографий соответствующей нажатой кнопке
   var setCurrentFilter = function (evt) {
     var currentFilter = evt.target.id.split('-')[1];
-    if (currentFilter === 'popular') {
-      window.debounce(window.picture(pictures));
-    }
-    if (currentFilter === 'new') {
-      window.debounce(window.picture(getNewRandomPictures()));
-    }
-    if (currentFilter === 'discussed') {
-      window.debounce(window.picture(getDiscussedPictures()));
-    }
+    filterListMap[currentFilter]();
   };
 
   // Функция меняет класс active у нажатой кнопки
@@ -102,7 +106,7 @@
   // Функция отрисовывает данные (фотографии), полученные с сервера
   var onSuccessLoad = function (data) {
     pictures = data;
-    window.picture(pictures);
+    window.picture.create(pictures);
     showFiltersBlock();
   };
 

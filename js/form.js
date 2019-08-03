@@ -9,9 +9,9 @@
   var commentTextarea = formPopup.querySelector('.text__description');
   var hashtagInput = formPopup.querySelector('.text__hashtags');
   var imagePreview = document.querySelector('.img-upload__preview img');
-  var effectLevel = document.querySelector('.img-upload__effect-level');
   var zoomButton = document.querySelector('.scale__control--bigger');
   var unzoomButton = document.querySelector('.scale__control--smaller');
+  var imagePreviewEffects = Array.from(formPopup.querySelectorAll('.effects__preview'));
 
   // Функция закрывает форму при нажатии на Esc
   var onFormPopupEscPress = function (evt) {
@@ -22,27 +22,26 @@
 
   // Функция открывает форму загрузки и редактирования изображения
   var openFormPopup = function () {
-    window.zoom.setInitialZoom();
-    window.edit();
     formPopup.classList.remove('hidden');
-    effectLevel.classList.add('hidden');
-    zoomButton.addEventListener('click', window.zoom.setZoomValue);
-    unzoomButton.addEventListener('click', window.zoom.setUnzoomValue);
+    window.zoom.setInitial();
+    window.editImg.setInitialEffect();
+    zoomButton.addEventListener('click', window.zoom.onZoomButtonClick);
+    unzoomButton.addEventListener('click', window.zoom.onUnzoomButtonClick);
     document.addEventListener('keydown', onFormPopupEscPress);
   };
 
   // Функция закрывает форму загрузки и редактирования изображения
   var closeFormPopup = function () {
     form.reset();
+    window.validity.reset();
     formPopup.classList.add('hidden');
-    imagePreview.style.filter = 'initial';
-    zoomButton.removeEventListener('click', window.zoom.setZoomValue);
-    unzoomButton.removeEventListener('click', window.zoom.setUnzoomValue);
+    zoomButton.removeEventListener('click', window.zoom.onZoomButtonClick);
+    unzoomButton.removeEventListener('click', window.zoom.onUnzoomButtonClick);
     document.removeEventListener('keydown', onFormPopupEscPress);
   };
 
   fileChooser.addEventListener('change', function () {
-    window.uploadImg(fileChooser, imagePreview);
+    window.uploadImg(fileChooser, imagePreview, imagePreviewEffects);
     openFormPopup();
   });
 
@@ -53,7 +52,7 @@
   // Отправка данных формы на сервер
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.validity.checkValidity();
+    window.validity.check();
     if (!window.validity.isStopSubmit) {
       window.backend.upload(new FormData(form), onSuccessMessage, onErrorMessage);
       closeFormPopup();
@@ -74,16 +73,19 @@
     };
   };
 
+  var mainElement = document.querySelector('main');
+
   var renderMessage = function (element) {
-    var mainElement = document.querySelector('main');
     mainElement.appendChild(element);
   };
 
   // Функция callback показывает сообщение об успешной отправке данных формы на сервер
   var onSuccessMessage = function () {
-    var successMessage = createMessage('success').message;
+    var successMessageObject = createMessage('success');
+    var successMessage = successMessageObject.message;
+    var successButton = successMessageObject.button;
+
     renderMessage(successMessage);
-    var successButton = createMessage('success').button;
 
     var onCloseButtonClick = function () {
       successMessage.parentNode.removeChild(successMessage);
@@ -103,9 +105,11 @@
 
   // Функция callback показывает сообщение о неуспешной отправке данных формы на сервер
   var onErrorMessage = function () {
-    var errorMessage = createMessage('error').message;
+    var errorMessageObject = createMessage('error');
+    var errorMessage = errorMessageObject.message;
+    var errorButton = errorMessageObject.button;
+
     renderMessage(errorMessage);
-    var errorButton = createMessage('error').button;
 
     var onCloseButtonClick = function () {
       errorMessage.parentNode.removeChild(errorMessage);
